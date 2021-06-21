@@ -40,6 +40,21 @@ app.post("/login", async (req, res) => {
     }
 });
 
+app.post("/search", async (req, res) => {
+    const {search} = req.body;
+    console.log(search);
+    const searchError = await pool.query("SELECT * FROM error WHERE \"errorName\" LIKE $1 OR \"errorContent\" LIKE $1", ['%' + search + '%']);
+    console.log(searchError.rows);
+    res.json(searchError.rows);
+})
+
+app.post("/add", async (req, res) => {
+    const {header, content, date} = req.body;
+    const newError = await pool.query("INSERT INTO error(\"errorName\", \"errorContent\", \"errorDate\") VALUES($1, $2, $3) RETURNING *", [header, content, date]);
+    res.json(newError.rows);
+    console.log(newError.rows);
+});
+
 app.listen(5000, () => {
     console.log("Server has started on port 5000.");
 });

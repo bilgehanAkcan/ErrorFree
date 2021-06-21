@@ -36,3 +36,14 @@ code {
 .table-tr {
   height: 100px;
 }
+
+.textarea-style {
+  height: 200px;
+  width: 600px;
+  text-align: center;
+  border-radius: 1em;
+}
+
+input[type="textarea"]::placeholder { 
+  text-align: center;
+}

@@ -1,14 +1,36 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Navbar from "./NavBar";
-import Search from "./Search";
+import HomePage from "./HomePage";
 
 function EditPage() {
+    const [header, setHeader] = React.useState("");
+    const [content, setContent] = React.useState("");
+    const date = '2021-10-10';
+
+    async function addError(e) {
+        e.preventDefault();
+        const body = {header, content, date};
+        debugger;
+        const response = await fetch('http://localhost:5000/add', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+            });
+    }
+
     return (
         <div>
             <Navbar></Navbar>
-            <Search></Search><br></br>
-            <p>AAAAAAAAAAA</p>
+            <center>
+            <div class="form-floating mt-5">
+                <input type="textarea" onChange={e => {setHeader(e.target.value)}} style={{width: "700px", height: "70px"}} class="form-control" id="floatingInput" step="any" placeholder="Enter the error header..."/>
+            </div>
+            <div class="form-floating mt-3">
+                <input type="textarea" onChange={e => {setContent(e.target.value)}} style={{width: "700px", height: "200px"}} class="form-control" step="any" id="floatingPassword" placeholder="Enter the error content..."/>
+            </div>
+            <button type="button" onClick={addError} className="mt-3 btn btn-success">Add</button>
+            </center>
         </div>
     );
 }

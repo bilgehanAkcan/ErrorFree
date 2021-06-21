@@ -16,7 +16,7 @@ function NavBar() {
                             <a className="navbar-text-color" href="#"><Link to="HomePage">Home</Link><span class="sr-only">(current)</span></a>
                         </li>
                         <li className="nav-item ml-5">
-                            <a className="navbar-text-color" href="#"><Link to="EditPage">Add/Edit</Link></a>
+                            <a className="navbar-text-color" href="#"><Link to="EditPage">Add</Link></a>
                         </li>
                     </ul>
                     <ul className="navbar-nav">
