@@ -1,12 +1,20 @@
 import React,{useEffect} from "react";
 import ReactDOM from "react-dom";
 import Navbar from "./NavBar";
+import {BiEdit} from "react-icons/bi";
+import {RiDeleteBin5Line} from "react-icons/ri";
+import Popup from "./Popup";
+import PopupDelete from "./PopupDelete";
 
 function HomePage(props) {
     const [errorList, setErrorList] = React.useState([]);
     const [search, setSearch] = React.useState("");
     const [searchResult, setSearchResult] = React.useState([]);
     const [validation, setValidation] = React.useState(false);
+    const [popup, setPopup] = React.useState(false);
+    const [popup2, setPopup2] = React.useState(false);
+    const [temp, deleteId] = React.useState(0);
+    const [temp2, setTemp2] = React.useState([]);
 
     async function sendSearch(e) {
         e.preventDefault();
@@ -35,6 +43,14 @@ function HomePage(props) {
                     <td className="table-td">{x.errorDate}</td>
                     <td className="table-td">{x.errorName}</td>
                     <td className="table-td">{x.errorContent}</td>
+                    <td>
+                        <button type="button" onClick={() => { deleteId(x.id); setTemp2(x); setPopup(true)}} class="btn btn-default btn-sm">
+                            <BiEdit></BiEdit>&nbsp;&nbsp;Edit
+                        </button>&nbsp;
+                        <button type="button" onClick={() => { deleteId(x.id); setPopup2(true)}} class="btn btn-default btn-sm">
+                            <RiDeleteBin5Line></RiDeleteBin5Line>&nbsp;&nbsp;Delete
+                        </button>&nbsp;&nbsp;&nbsp;
+                    </td>
                 </tr>
         )
     }
@@ -59,9 +75,12 @@ function HomePage(props) {
                         <th className="table-td">Date</th>
                         <th className="table-td">Error Header</th>
                         <th className="table-td">Error</th>
+                        <th></th>
                     </tr>
                     {validation === false ? errorList.map(printAll) : searchResult.map(printAll)}
                 </table>
+                <Popup errorElements={temp2} deleteId ={temp} trigger={popup} setTrigger={setPopup}></Popup>
+                <PopupDelete deleteId={temp} trigger2={popup2} setTrigger2={setPopup2}></PopupDelete>
             </center>
         </div>
     );

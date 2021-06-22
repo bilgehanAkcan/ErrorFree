@@ -55,6 +55,20 @@ app.post("/add", async (req, res) => {
     console.log(newError.rows);
 });
 
+
+app.delete("/delete/:id", async (req, res) => {
+    const {id} = req.params;
+    const deleteError = await pool.query("DELETE FROM error WHERE id = $1", [id]);
+    res.json("deleted");
+})
+
+app.put("/edit/:id", async (req, res) => {
+    const {id} = req.params;
+    const {name, content, date} = req.body;
+    const editError = await pool.query("UPDATE error SET \"errorName\" = $1, \"errorContent\" = $2, \"errorDate\" = $3 WHERE id = $4", [name, content, date, id]);
+    res.json(editError.rows);
+})
+
 app.listen(5000, () => {
     console.log("Server has started on port 5000.");
 });
