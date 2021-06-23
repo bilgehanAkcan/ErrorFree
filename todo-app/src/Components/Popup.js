@@ -3,7 +3,9 @@ import React from "react";
 function Popup(props) {
     const [name, setName] = React.useState("");
     const [content, setContent] = React.useState("");
-    const date = '2021-10-10';
+    var currentDate = new Date();
+    var date = currentDate;
+
     async function editError() {
         const temp = props.deleteId;
         const body = {name, content, date};
@@ -13,6 +15,12 @@ function Popup(props) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         });
+        if (response.ok) {
+            if (props.onUpdated) {
+                props.onUpdated();
+            }
+        }
+        debugger;
     }
 
     function insidePopup() {

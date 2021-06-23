@@ -3,6 +3,12 @@ import ReactDOM from "react-dom";
 import {Link} from "react-router-dom";
 
 function NavBar() {
+    async function logout() {
+        const response = await fetch("http://localhost:5000/logout");
+        const jsonData = await response.json();
+        debugger;
+    }
+
     return (
         <div>
             <nav className="navbar navbar-expand-md navbar-light bg-secondary py-3">
@@ -21,7 +27,7 @@ function NavBar() {
                     </ul>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="navbar-text-color" href="#"><Link to="">Log Out</Link></a>
+                            <a className="navbar-text-color" onClick={logout} href="#"><Link to="">Log Out</Link></a>
                         </li>
                     </ul>
                 </div>

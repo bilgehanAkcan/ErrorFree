@@ -6,7 +6,8 @@ import HomePage from "./HomePage";
 function EditPage() {
     const [header, setHeader] = React.useState("");
     const [content, setContent] = React.useState("");
-    const date = '2021-10-10';
+    var currentDate = new Date();
+    var date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
 
     async function addError(e) {
         e.preventDefault();

@@ -6,7 +6,7 @@ import {RiDeleteBin5Line} from "react-icons/ri";
 import Popup from "./Popup";
 import PopupDelete from "./PopupDelete";
 
-function HomePage(props) {
+function HomePage() {
     const [errorList, setErrorList] = React.useState([]);
     const [search, setSearch] = React.useState("");
     const [searchResult, setSearchResult] = React.useState([]);
@@ -25,6 +25,10 @@ function HomePage(props) {
             body: JSON.stringify(body)
             })
         const jsonData = await response.json();
+        for (let data of jsonData) {
+            var errorDate = new Date(data.errorDate);
+            data.errorDateStr = errorDate.getDate() + "-" + (errorDate.getMonth() + 1) + "-" + errorDate.getFullYear()
+        }
         setSearchResult(jsonData);
         setValidation(true);
     }
@@ -33,21 +37,24 @@ function HomePage(props) {
         setValidation(false);
         const response = await fetch("http://localhost:5000/error");
         const jsonData = await response.json();
+        for (let data of jsonData) {
+            var errorDate = new Date(data.errorDate);
+            data.errorDateStr = errorDate.getDate() + "-" + (errorDate.getMonth() + 1) + "-" + errorDate.getFullYear()
+        }
         setErrorList(jsonData);
-        debugger;
     }
 
     function printAll(x) {
         return (
                 <tr className="table-tr">
-                    <td className="table-td">{x.errorDate}</td>
+                    <td className="table-td">{x.errorDateStr}</td>
                     <td className="table-td">{x.errorName}</td>
                     <td className="table-td">{x.errorContent}</td>
                     <td>
-                        <button type="button" onClick={() => { deleteId(x.id); setTemp2(x); setPopup(true)}} class="btn btn-default btn-sm">
+                        <button type="button" onClick={() => {deleteId(x.id); setTemp2(x); setPopup(true)}} className="btn btn-warning btn-default btn-sm">
                             <BiEdit></BiEdit>&nbsp;&nbsp;Edit
                         </button>&nbsp;
-                        <button type="button" onClick={() => { deleteId(x.id); setPopup2(true)}} class="btn btn-default btn-sm">
+                        <button type="button" onClick={() => {deleteId(x.id); setPopup2(true)}} className="btn btn-default btn-danger btn-sm">
                             <RiDeleteBin5Line></RiDeleteBin5Line>&nbsp;&nbsp;Delete
                         </button>&nbsp;&nbsp;&nbsp;
                     </td>
@@ -56,7 +63,7 @@ function HomePage(props) {
     }
 
     return (
-        <div>
+        <div> 
             <Navbar></Navbar><br></br>
             <center><button type="button" onClick={getError}>List All Errors</button></center>
             <nav className="navbar navbar-light mt-3">
@@ -79,7 +86,7 @@ function HomePage(props) {
                     </tr>
                     {validation === false ? errorList.map(printAll) : searchResult.map(printAll)}
                 </table>
-                <Popup errorElements={temp2} deleteId ={temp} trigger={popup} setTrigger={setPopup}></Popup>
+                <Popup errorElements={temp2} deleteId ={temp} trigger={popup} setTrigger={setPopup} onUpdated={() => getError()}></Popup>
                 <PopupDelete deleteId={temp} trigger2={popup2} setTrigger2={setPopup2}></PopupDelete>
             </center>
         </div>
