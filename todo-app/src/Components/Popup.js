@@ -9,7 +9,6 @@ function Popup(props) {
     async function editError() {
         const temp = props.deleteId;
         const body = {name, content, date};
-        debugger;
         const response = await fetch('http://localhost:5000/edit/' + temp, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -20,7 +19,6 @@ function Popup(props) {
                 props.onUpdated();
             }
         }
-        debugger;
     }
 
     function insidePopup() {

@@ -5,11 +5,14 @@ import {AiFillMail} from "react-icons/ai";
 import {RiLockPasswordFill} from "react-icons/ri";
 import {Link} from "react-router-dom";
 import RegistrationPage from "./RegistrationPage";
+import {useCookies} from "react-cookie";
 
 function SignInPage() {
+    const [cookies, setCookie] = useCookies(["userId"])
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     var temp;
+    var temp2;
 
     async function checkLogin(e) {
         e.preventDefault();
@@ -20,15 +23,18 @@ function SignInPage() {
             body: JSON.stringify(body)
         }).then(x => x.json())
         .then(data => {
-            temp = data;
-            debugger;
+            temp = data.isValid;
+            temp2 = data.userId;
             if (temp) {
             }
             else {
                 alert("Login Failed, Please Try Again");
                 window.location = "/";
             }
-        })
+        });
+        setCookie("userId", temp2, {
+            path: "/"
+        });
     }
 
     return (

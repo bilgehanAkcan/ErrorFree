@@ -10,7 +10,7 @@ function RegistrationPage() {
     const [password, setPassword] = React.useState("");
     const [passwordAgain, setPasswordAgain] = React.useState("");
 
-    async function register() {
+    async function register(e) {
         if ( password === passwordAgain ) {
             const body = {name,email,password};
             const response = await fetch("http://localhost:5000/register", {
@@ -18,6 +18,8 @@ function RegistrationPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
+            e.preventDefault();
+            window.location = "/";
         }
         else {
             alert("Not confirmed. Please try again.")

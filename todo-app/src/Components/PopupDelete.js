@@ -2,11 +2,15 @@ import React from "react";
 
 function PopupDelete(props) {
     async function deleteItem() {
-        debugger;
         const temp = props.deleteId;
         const response = await fetch('http://localhost:5000/delete/' + temp, {
             method: "DELETE",
             });
+        if (response.ok) {
+            if (props.onUpdated) {
+                props.onUpdated();
+            }
+        }
     }
 
     function insidePopup() {

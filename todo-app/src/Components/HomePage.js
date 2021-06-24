@@ -5,8 +5,17 @@ import {BiEdit} from "react-icons/bi";
 import {RiDeleteBin5Line} from "react-icons/ri";
 import Popup from "./Popup";
 import PopupDelete from "./PopupDelete";
+import {FcPlus} from "react-icons/fc";
+import { Cookies } from "react-cookie";
+import {AiOutlineInfoCircle} from "react-icons/ai";
+import {Link} from "react-router-dom"
+import DetailsPage from "./DetailsPage";
+import {useCookies} from "react-cookie";
 
 function HomePage() {
+    const cookies = new Cookies();
+    const [cookies2, setCookie] = useCookies(["errorId"]);
+    const userId = cookies.get("userId");
     const [errorList, setErrorList] = React.useState([]);
     const [search, setSearch] = React.useState("");
     const [searchResult, setSearchResult] = React.useState([]);
@@ -43,6 +52,40 @@ function HomePage() {
         }
         setErrorList(jsonData);
     }
+    
+
+    function errorCookie(x) {
+        setCookie("errorId", x.id, {
+            path: "/"
+        });
+    }
+
+    function enableButtons(x) {
+        if ( x.userId == userId ) {
+            return (
+                    <td>
+                        <button type="button" onClick={() => {deleteId(x.id); setTemp2(x); setPopup(true)}} className="btn btn-warning btn-default btn-sm">
+                            <BiEdit></BiEdit>&nbsp;&nbsp;Edit
+                        </button>&nbsp;
+                        <button type="button" onClick={() => {deleteId(x.id); setPopup2(true)}} className="btn btn-default btn-danger btn-sm">
+                            <RiDeleteBin5Line></RiDeleteBin5Line>&nbsp;&nbsp;Delete
+                        </button>&nbsp;
+                        <button type="button" onClick={() => {errorCookie(x)}} className="btn btn-default btn-info btn-sm">
+                            <AiOutlineInfoCircle></AiOutlineInfoCircle>&nbsp;&nbsp;<Link to="/DetailsPage">See Details</Link>
+                        </button>&nbsp;&nbsp;&nbsp;
+                    </td>
+            );
+        }
+        else {
+            return (
+                <td>
+                    <Link to="/DetailsPage"><button type="button" onClick={() => {deleteId(x.id)}} className="btn btn-default btn-info btn-sm">
+                        <AiOutlineInfoCircle></AiOutlineInfoCircle>&nbsp;&nbsp;See Details
+                    </button></Link>&nbsp;&nbsp;&nbsp;
+                </td>
+            );
+        }
+    }
 
     function printAll(x) {
         return (
@@ -50,14 +93,7 @@ function HomePage() {
                     <td className="table-td">{x.errorDateStr}</td>
                     <td className="table-td">{x.errorName}</td>
                     <td className="table-td">{x.errorContent}</td>
-                    <td>
-                        <button type="button" onClick={() => {deleteId(x.id); setTemp2(x); setPopup(true)}} className="btn btn-warning btn-default btn-sm">
-                            <BiEdit></BiEdit>&nbsp;&nbsp;Edit
-                        </button>&nbsp;
-                        <button type="button" onClick={() => {deleteId(x.id); setPopup2(true)}} className="btn btn-default btn-danger btn-sm">
-                            <RiDeleteBin5Line></RiDeleteBin5Line>&nbsp;&nbsp;Delete
-                        </button>&nbsp;&nbsp;&nbsp;
-                    </td>
+                    {enableButtons(x)}
                 </tr>
         )
     }
@@ -87,7 +123,7 @@ function HomePage() {
                     {validation === false ? errorList.map(printAll) : searchResult.map(printAll)}
                 </table>
                 <Popup errorElements={temp2} deleteId ={temp} trigger={popup} setTrigger={setPopup} onUpdated={() => getError()}></Popup>
-                <PopupDelete deleteId={temp} trigger2={popup2} setTrigger2={setPopup2}></PopupDelete>
+                <PopupDelete deleteId={temp} trigger2={popup2} setTrigger2={setPopup2} onUpdated={() => getError()}></PopupDelete>
             </center>
         </div>
     );

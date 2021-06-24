@@ -4,6 +4,7 @@ import RegistrationPage from './Components/RegistrationPage';
 import SignInPage from "./Components/SignInPage";
 import HomePage from "./Components/HomePage";
 import EditPage from './Components/EditPage';
+import DetailsPage from './Components/DetailsPage';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route exact path="/RegistrationPage" component={RegistrationPage} />
       <Route exact path="/HomePage" component={HomePage} />
       <Route exact path="/EditPage" component={EditPage} />
+      <Route exact path="/DetailsPage" component={DetailsPage} />
     </div>
   );
 }

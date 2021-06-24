@@ -2,8 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Navbar from "./NavBar";
 import HomePage from "./HomePage";
+import { Cookies } from "react-cookie";
 
 function EditPage() {
+    const cookies = new Cookies();
     const [header, setHeader] = React.useState("");
     const [content, setContent] = React.useState("");
     var currentDate = new Date();
@@ -11,13 +13,16 @@ function EditPage() {
 
     async function addError(e) {
         e.preventDefault();
-        const body = {header, content, date};
-        debugger;
+        const userId = cookies.get("userId");
+        const body = {header, content, date, userId};
         const response = await fetch('http://localhost:5000/add', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
             });
+        const jsonData = response.json();
+        console.log(jsonData);
+        window.location = "/HomePage";
     }
 
     return (

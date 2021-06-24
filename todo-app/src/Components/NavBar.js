@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Link} from "react-router-dom";
+import { Cookies } from "react-cookie";
 
 function NavBar() {
+    const cookies = new Cookies();
+    const userId = cookies.get("userId");
+
     async function logout() {
-        const response = await fetch("http://localhost:5000/logout");
-        const jsonData = await response.json();
-        debugger;
     }
 
     return (
@@ -19,15 +20,15 @@ function NavBar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item active ml-5">
-                            <a className="navbar-text-color" href="#"><Link to="HomePage">Home</Link><span class="sr-only">(current)</span></a>
+                            <Link to="HomePage" className="navbar-text-color">Home<span class="sr-only">(current)</span></Link>
                         </li>
                         <li className="nav-item ml-5">
-                            <a className="navbar-text-color" href="#"><Link to="EditPage">Add</Link></a>
+                            <Link to="EditPage" className="navbar-text-color">Add</Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="navbar-text-color" onClick={logout} href="#"><Link to="">Log Out</Link></a>
+                            <Link to="" onClick={logout} className="navbar-text-color">Log Out</Link>
                         </li>
                     </ul>
                 </div>

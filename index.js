@@ -21,9 +21,18 @@ app.get("/error", async (req, res) => {
     res.json(errors.rows);
 });
 
+app.get("/anError/:id", async (req, res) => {
+    const {id} = req.params;
+    const error = await pool.query("SELECT * FROM error WHERE \"id\" = $1", [id]);
+    if(error.rowCount == 0) {
+        return res.status(500).json({ message: "Veri bulunamadı." });
+    }
+    res.json(error.rows[0]);
+})
+
 app.post("/register", async (req, res) => {
     const {name,email,password} = req.body;
-    const newRegister = await pool.query("INSERT INTO register(name, email, password, \"isActive\") VALUES($1, $2, $3, $4) RETURNING *", [name, email, password, false]);
+    const newRegister = await pool.query("INSERT INTO register(name, email, password, \"isActive\") VALUES($1, $2, $3, $4) RETURNING *", [name, email, password, true]);
     res.json(newRegister.rows);
 });
 
@@ -31,9 +40,8 @@ app.post("/login", async (req, res) => {
     const {email, password} = req.body;
     const newLogin = await pool.query("SELECT * FROM register WHERE email = $1 AND password = $2", [email, password]);
     if (newLogin.rowCount != 0 ) {
-        console.log("Login Successful");
-        pool.query("UPDATE register SET \"isActive\" = $1", [true]);
-        res.json(true);
+        console.log(newLogin.rows);
+        res.json({isValid: true, userId: newLogin.rows[0].id});
     }
     else {
         console.log("Try again");
@@ -50,8 +58,8 @@ app.post("/search", async (req, res) => {
 })
 
 app.post("/add", async (req, res) => {
-    const {header, content, date} = req.body;
-    const newError = await pool.query("INSERT INTO error(\"errorName\", \"errorContent\", \"errorDate\", \"isActive\") VALUES($1, $2, $3, $4) RETURNING *", [header, content, date, true]);
+    const {header, content, date, userId} = req.body;
+    const newError = await pool.query("INSERT INTO error(\"errorName\", \"errorContent\", \"errorDate\", \"isActive\", \"userId\") VALUES($1, $2, $3, $4, $5) RETURNING *", [header, content, date, true, userId]);
     res.json(newError.rows);
     console.log(newError.rows);
 });
@@ -69,11 +77,6 @@ app.put("/edit/:id", async (req, res) => {
     const editError = await pool.query("UPDATE error SET \"errorName\" = $1, \"errorContent\" = $2, \"errorDate\" = $3 WHERE id = $4", [name, content, date, id]);
     res.json(editError.rows);
 })
-
-app.get("/logout", async (req, res) => {
-    const user = await pool.query("SELECT * FROM register WHERE \"isActive\" = $1", [true]);
-    res.json(user.rows);
-});
 
 app.listen(5000, () => {
     console.log("Server has started on port 5000.");
