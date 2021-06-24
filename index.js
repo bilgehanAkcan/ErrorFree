@@ -24,10 +24,7 @@ app.get("/error", async (req, res) => {
 app.get("/anError/:id", async (req, res) => {
     const {id} = req.params;
     const error = await pool.query("SELECT * FROM error WHERE \"id\" = $1", [id]);
-    if(error.rowCount == 0) {
-        return res.status(500).json({ message: "Veri bulunamadı." });
-    }
-    res.json(error.rows[0]);
+    res.json(error.rows);
 })
 
 app.post("/register", async (req, res) => {
