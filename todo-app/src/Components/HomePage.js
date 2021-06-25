@@ -79,9 +79,9 @@ function HomePage() {
         else {
             return (
                 <td>
-                    <Link to="/DetailsPage"><button type="button" onClick={() => {deleteId(x.id)}} className="btn btn-default btn-info btn-sm">
-                        <AiOutlineInfoCircle></AiOutlineInfoCircle>&nbsp;&nbsp;See Details
-                    </button></Link>&nbsp;&nbsp;&nbsp;
+                    <button type="button" onClick={() => {errorCookie(x)}} className="btn btn-default btn-info btn-sm">
+                        <AiOutlineInfoCircle></AiOutlineInfoCircle>&nbsp;&nbsp;<Link to="/DetailsPage">See Details</Link>
+                    </button>&nbsp;&nbsp;&nbsp;
                 </td>
             );
         }

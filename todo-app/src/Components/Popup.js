@@ -27,8 +27,8 @@ function Popup(props) {
                 <div className="popup-inner">
                     <table>
                         <tr>
-                            <td><input type="textarea" onChange={e => setName(e.target.value)} style={{width: "400px", height: "120px"}} class="form-control" id="floatingInput" step="any" placeholder={props.errorElements.errorName}/></td>
-                            <td><input type="textarea" onChange={e => setContent(e.target.value)} style={{width: "400px", height: "120px"}} class="form-control" step="any" id="floatingPassword" placeholder={props.errorElements.errorContent}/></td>
+                            <td><input type="textarea" onChange={e => setName(e.target.value)} style={{width: "400px", height: "120px"}} className="form-control" id="floatingInput" step="any" placeholder={props.errorElements.errorName}/></td>
+                            <td><input type="textarea" onChange={e => setContent(e.target.value)} style={{width: "400px", height: "120px"}} className="form-control" step="any" id="floatingPassword" placeholder={props.errorElements.errorContent}/></td>
                         </tr>
                     </table>
                     <br></br>

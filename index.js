@@ -23,7 +23,7 @@ app.get("/error", async (req, res) => {
 
 app.get("/anError/:id", async (req, res) => {
     const {id} = req.params;
-    const error = await pool.query("SELECT * FROM error WHERE \"id\" = $1", [id]);
+    const error = await pool.query("SELECT * FROM error WHERE id = $1", [id]);
     res.json(error.rows);
 })
 
@@ -73,6 +73,17 @@ app.put("/edit/:id", async (req, res) => {
     const {name, content, date} = req.body;
     const editError = await pool.query("UPDATE error SET \"errorName\" = $1, \"errorContent\" = $2, \"errorDate\" = $3 WHERE id = $4", [name, content, date, id]);
     res.json(editError.rows);
+})
+
+app.post("/comment", async (req, res) => {
+    const {comment, date, errorId, userId} = req.body;
+    const saveComment = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\") VALUES($1, $2, $3, $4)", [comment, date, errorId, userId]);
+})
+
+app.get("/allComments/:id", async (req, res) => {
+    const {id} = req.params;
+    const comments = await pool.query("SELECT * FROM comments WHERE \"errorId\" = $1", [id]);
+    res.json(comments.rows);
 })
 
 app.listen(5000, () => {
