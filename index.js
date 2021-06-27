@@ -77,7 +77,7 @@ app.put("/edit/:id", async (req, res) => {
 
 app.post("/comment", async (req, res) => {
     const {comment, date, errorId, userId} = req.body;
-    const saveComment = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\") VALUES($1, $2, $3, $4)", [comment, date, errorId, userId]);
+    const saveComment = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\") VALUES($1, $2, $3, (SELECT name FROM register WHERE id = $4))", [comment, date, errorId, userId]);
 })
 
 app.get("/allComments/:id", async (req, res) => {
