@@ -22,6 +22,7 @@ function DetailsPage() {
 
     useEffect(() => {
         showDetails();
+        getAllComments();
       }, []);
 
     function commentCookie(x) {
@@ -58,6 +59,7 @@ function DetailsPage() {
         date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
         return (
             <tr>
+                <td>{x.rate}</td>
                 <td className="columnWidth"><FiThumbsUp size="1.5em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown size="1.5em"></FiThumbsDown>&emsp;&emsp;</td>
                 <td><strong>{x.whoseComment}:</strong>&emsp;</td>
                 <td>{x.comment}&emsp;</td>
@@ -69,15 +71,17 @@ function DetailsPage() {
     }
 
     async function saveComment() {
-        debugger;
         var currentDate = new Date();
         var date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
         const body = {comment, date, errorId, userId};
+        debugger;
         const response = await fetch("http://localhost:5000/comment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         });
+        debugger;
+        getAllComments();
     }
 
     return (
@@ -89,19 +93,18 @@ function DetailsPage() {
                 <hr style={{width:"800px", borderWidth:"10px", border:"3px solid black"}}></hr>
                 <p>{errorDetails[0]?.errorContent}</p>
                 <hr style={{width:"800px", borderWidth:"10px", border:"3px solid black"}}></hr>
-                {getAllComments() ? 
+                {
                 <div>
                     <table>
                         {allComments.map(printOneByOne)}
                     </table>
-                </div> : null}
+                </div> }
                 <br></br>
                 <input type="textarea" onChange={e => setComment(e.target.value)} style={{width: "400px", height: "120px"}} className="form-control" id="floatingInput" step="any" placeholder="Write any comment"></input>
                 <button type="reset" className="btn btn-success mt-3" onClick={saveComment}>Add</button>
                 <CommentPopup comment={commentId} openPopup={trigger} commentOwner={userId} whichError={errorId} closePopup={setTrigger}></CommentPopup>
                 <CommentResultPopup comment={commentId} openPopup={trigger2} closePopup={setTrigger2} commentOwner={userId} whichError={errorId}></CommentResultPopup>
             </center>
-            
         </div>
     );
 
