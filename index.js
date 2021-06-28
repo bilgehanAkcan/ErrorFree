@@ -98,6 +98,13 @@ app.get("/childComments/:commentId", async (req, res) => {
     res.json(specificChildComments.rows);
 })
 
+app.put("/rate/:id", async (req, res) => {
+    const {rate} = req.body;
+    const {id} = req.params;
+    const setRate = await pool.query("UPDATE comments SET \"rate\" = $1 WHERE id = $2", [rate, id]);
+    res.json(setRate.rows);
+})
+
 app.listen(5000, () => {
     console.log("Server has started on port 5000.");
 });

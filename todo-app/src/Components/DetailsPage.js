@@ -18,7 +18,8 @@ function DetailsPage() {
     var date;
     const [trigger, setTrigger] = React.useState(false);
     const [trigger2, setTrigger2] = React.useState(false);
-    const commentId = cookies.get("commentId");    
+    const commentId = cookies.get("commentId");  
+    const [rate, setRate] = React.useState(0);  
 
     useEffect(() => {
         showDetails();
@@ -53,6 +54,15 @@ function DetailsPage() {
         setAllComments(jsonData);
     }
 
+    async function updateRate() {
+        debugger;
+        const body = {rate};
+        const response = await fetch("http://localhost:5000/rate/" + commentId, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+    }
 
     function printOneByOne(x) {
         var currentDate = new Date(x.commentDate);
@@ -60,7 +70,7 @@ function DetailsPage() {
         return (
             <tr>
                 <td>{x.rate}</td>
-                <td className="columnWidth"><FiThumbsUp size="1.5em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown size="1.5em"></FiThumbsDown>&emsp;&emsp;</td>
+                <td className="columnWidth"><button type="button" onClick={()=> {setRate(rate + 1); updateRate()}}><FiThumbsUp size="1.5em"></FiThumbsUp></button>&nbsp;&nbsp;<button type="button" onClick={()=> {setRate(rate - 1); updateRate()}}><FiThumbsDown size="1.5em"></FiThumbsDown></button>&emsp;&emsp;</td>
                 <td><strong>{x.whoseComment}:</strong>&emsp;</td>
                 <td>{x.comment}&emsp;</td>
                 <td className="columnWidth">({date})</td>
