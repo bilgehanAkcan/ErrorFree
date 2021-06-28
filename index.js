@@ -82,8 +82,19 @@ app.post("/comment", async (req, res) => {
 
 app.get("/allComments/:id", async (req, res) => {
     const {id} = req.params;
-    const comments = await pool.query("SELECT * FROM comments WHERE \"errorId\" = $1", [id]);
+    const comments = await pool.query("SELECT * FROM comments WHERE \"errorId\" = $1 AND \"parentCommentId\" IS NULL", [id]);
     res.json(comments.rows);
+})
+
+app.post("/extraComment", async (req, res) => {
+    const {comment, date, errorId, userId, commentId} = req.body;
+    const childComments = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\", \"parentCommentId\") VALUES($1, $2, $3, (SELECT name FROM register WHERE id = $4), $5)", [comment, date, errorId, userId, commentId]);
+})
+
+app.get("/childComments/:commentId", async (req, res) => {
+    const commentId = req.params.commentId;
+    const specificChildComments = await pool.query("SELECT * FROM comments WHERE \"parentCommentId\" = $1", [commentId]);
+    res.json(specificChildComments.rows);
 })
 
 app.listen(5000, () => {

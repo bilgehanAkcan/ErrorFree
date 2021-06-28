@@ -1,33 +1,44 @@
 import React, {useEffect} from "react";
 import NavBar from "./NavBar";
 import { Cookies } from "react-cookie";
-import {HiOutlineArrowCircleUp} from "react-icons/hi"
-import {HiOutlineArrowCircleDown} from "react-icons/hi"
+import {FiThumbsUp} from "react-icons/fi"
+import {FiThumbsDown} from "react-icons/fi"
+import CommentPopup from "./CommentPopup";
+import {useCookies} from "react-cookie";
+import CommentResultPopup from "./CommentResultPopup";
 
 function DetailsPage() {
     const cookies = new Cookies();
+    const [cookies3, setCookie] = useCookies(["commentId"]);
     const errorId = cookies.get("errorId");
     const [errorDetails, setErrorDetails] = React.useState([]);
     const [allComments, setAllComments] = React.useState([]);
     const [comment, setComment] = React.useState("");
     const userId = cookies.get("userId");
     var date;
+    const [trigger, setTrigger] = React.useState(false);
+    const [trigger2, setTrigger2] = React.useState(false);
+    const commentId = cookies.get("commentId");    
 
     useEffect(() => {
-            showDetails();
+        showDetails();
       }, []);
+
+    function commentCookie(x) {
+        setCookie("commentId", x.id, {
+            path: "/"
+        });
+    }
 
     function showDetails() {
         const response = fetch("http://localhost:5000/anError/" + errorId);
         response.then(async response => {
             if(response.status == 200) {
-                debugger;
                 const value = await response.json();
                 setErrorDetails(value);
             }
         });
     }
-    debugger;
     
 
     function getDate(){
@@ -35,28 +46,30 @@ function DetailsPage() {
         return errorDate.getDate() + "-" + (errorDate.getMonth() + 1) + "-" + errorDate.getFullYear();
     }
 
-    async function getAllComments() {
-        debugger;
+    async function getAllComments(x) {
         const response = await fetch("http://localhost:5000/allComments/" + errorId);
         const jsonData = await response.json();
         setAllComments(jsonData);
-        return true;
     }
+
 
     function printOneByOne(x) {
         var currentDate = new Date(x.commentDate);
         date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
         return (
             <tr>
-                <td><HiOutlineArrowCircleUp size="2.5em"></HiOutlineArrowCircleUp><HiOutlineArrowCircleDown size="2.5em"></HiOutlineArrowCircleDown>&emsp;&emsp;</td>
+                <td className="columnWidth"><FiThumbsUp size="1.5em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown size="1.5em"></FiThumbsDown>&emsp;&emsp;</td>
                 <td><strong>{x.whoseComment}:</strong>&emsp;</td>
                 <td>{x.comment}&emsp;</td>
-                <td>({date})</td>
+                <td className="columnWidth">({date})</td>
+                <td><button onClick={() => {setTrigger(true); commentCookie(x)}}>Add Comment</button></td>
+                <td><button onClick={() => {setTrigger2(true); commentCookie(x)}}>See Comments</button></td>
             </tr>
         );
     }
 
     async function saveComment() {
+        debugger;
         var currentDate = new Date();
         var date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
         const body = {comment, date, errorId, userId};
@@ -84,7 +97,9 @@ function DetailsPage() {
                 </div> : null}
                 <br></br>
                 <input type="textarea" onChange={e => setComment(e.target.value)} style={{width: "400px", height: "120px"}} className="form-control" id="floatingInput" step="any" placeholder="Write any comment"></input>
-                <button type="button" className="btn btn-success mt-3" onClick={saveComment} >Add</button>
+                <button type="reset" className="btn btn-success mt-3" onClick={saveComment}>Add</button>
+                <CommentPopup comment={commentId} openPopup={trigger} commentOwner={userId} whichError={errorId} closePopup={setTrigger}></CommentPopup>
+                <CommentResultPopup comment={commentId} openPopup={trigger2} closePopup={setTrigger2} commentOwner={userId} whichError={errorId}></CommentResultPopup>
             </center>
             
         </div>

@@ -85,3 +85,8 @@ th {
   background-color: #FFF;
   max-width: 600px;
 }
+
+.columnWidth {
+  width: 120px;
+  padding: 20px 15px;
+}
