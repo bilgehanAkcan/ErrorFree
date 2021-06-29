@@ -5,7 +5,6 @@ function CommentPopup(props) {
     const [comment, setComment] = React.useState("");
     
     async function sendComment() {
-        debugger;
         console.log(comment);
         var currentDate = new Date();
         var errorId = props.whichError;
@@ -23,10 +22,10 @@ function CommentPopup(props) {
     function insidePopup() {
         return (
             <div className="popup">
-                <div className="popup-inner2">
+                <div className="popup-inner3">
                     <br></br>
                     <input type="textarea" onChange={e => setComment(e.target.value)} style={{width: "400px", height: "120px"}} className="form-control" id="floatingInput" step="any"/><br></br>
-                    <button type="button" onClick={sendComment} className="btn btn-success">Add</button>&nbsp;&nbsp;&nbsp;
+                    <button type="button" onClick={() => {sendComment(); props.closePopup(false);}} className="btn btn-success">Add</button>&nbsp;&nbsp;&nbsp;
                     <button type="button" onClick={() => props.closePopup(false)} className="btn btn-danger">Close</button>
                 </div>
             </div>

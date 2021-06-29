@@ -18,19 +18,19 @@ function DetailsPage() {
     var date;
     const [trigger, setTrigger] = React.useState(false);
     const [trigger2, setTrigger2] = React.useState(false);
-    const commentId = cookies.get("commentId");  
-    const [rate, setRate] = React.useState(0);  
-
-    useEffect(() => {
-        showDetails();
-        getAllComments();
-      }, []);
+    const [childComments, setChildComments] = React.useState([]);
+    const commentId = cookies.get("commentId"); 
 
     function commentCookie(x) {
         setCookie("commentId", x.id, {
             path: "/"
         });
     }
+
+    useEffect(() => {
+        showDetails();
+        getAllComments();
+      }, []);
 
     function showDetails() {
         const response = fetch("http://localhost:5000/anError/" + errorId);
@@ -54,43 +54,57 @@ function DetailsPage() {
         setAllComments(jsonData);
     }
 
-    async function updateRate() {
-        debugger;
-        const body = {rate};
-        const response = await fetch("http://localhost:5000/rate/" + commentId, {
+    async function updateRate(id) {
+        const response = await fetch("http://localhost:5000/rate/" + id, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
+            body: JSON.stringify()
         });
+        const jsonData = await response.json();
     }
+
+    async function updateRate2(id) {
+        const response = await fetch("http://localhost:5000/rate2/" + id, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify()
+        });
+        const jsonData = await response.json();
+    }
+
 
     function printOneByOne(x) {
         var currentDate = new Date(x.commentDate);
         date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
         return (
             <tr>
-                <td>{x.rate}</td>
-                <td className="columnWidth"><button type="button" onClick={()=> {setRate(rate + 1); updateRate()}}><FiThumbsUp size="1.5em"></FiThumbsUp></button>&nbsp;&nbsp;<button type="button" onClick={()=> {setRate(rate - 1); updateRate()}}><FiThumbsDown size="1.5em"></FiThumbsDown></button>&emsp;&emsp;</td>
+                <td><strong>{x.like}</strong></td>&nbsp;&nbsp;
+                <td><FiThumbsUp onClick={()=> {commentCookie(x); updateRate(x.id)}} size="1.5em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown onClick={()=> {commentCookie(x); updateRate2(x.id)}} size="1.5em"></FiThumbsDown></td>&nbsp;&nbsp;
+                <td><strong>{x.dislike}</strong></td>&emsp;&emsp;
                 <td><strong>{x.whoseComment}:</strong>&emsp;</td>
                 <td>{x.comment}&emsp;</td>
-                <td className="columnWidth">({date})</td>
+                <td className="columnWidth">{date}</td>
                 <td><button onClick={() => {setTrigger(true); commentCookie(x)}}>Add Comment</button></td>
-                <td><button onClick={() => {setTrigger2(true); commentCookie(x)}}>See Comments</button></td>
+                <td><button onClick={() => {getChildComments(x.id); setTrigger2(true); commentCookie(x);}}>See Comments</button></td>
             </tr>
         );
+    }
+
+    async function getChildComments(commentId) {
+        const response = await fetch("http://localhost:5000/childComments/" + commentId);
+        const jsonData = await response.json();
+        setChildComments(jsonData);
     }
 
     async function saveComment() {
         var currentDate = new Date();
         var date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
         const body = {comment, date, errorId, userId};
-        debugger;
         const response = await fetch("http://localhost:5000/comment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         });
-        debugger;
         getAllComments();
     }
 
@@ -101,23 +115,21 @@ function DetailsPage() {
                 <h1 className="mt-5">{errorDetails[0]?.errorName}</h1>
                 <h3>Publish Date:&nbsp;{getDate()}</h3>
                 <hr style={{width:"800px", borderWidth:"10px", border:"3px solid black"}}></hr>
-                <p>{errorDetails[0]?.errorContent}</p>
+                <h3>{errorDetails[0]?.errorContent}</h3>
                 <hr style={{width:"800px", borderWidth:"10px", border:"3px solid black"}}></hr>
-                {
                 <div>
                     <table>
                         {allComments.map(printOneByOne)}
                     </table>
-                </div> }
+                </div> 
                 <br></br>
                 <input type="textarea" onChange={e => setComment(e.target.value)} style={{width: "400px", height: "120px"}} className="form-control" id="floatingInput" step="any" placeholder="Write any comment"></input>
                 <button type="reset" className="btn btn-success mt-3" onClick={saveComment}>Add</button>
                 <CommentPopup comment={commentId} openPopup={trigger} commentOwner={userId} whichError={errorId} closePopup={setTrigger}></CommentPopup>
-                <CommentResultPopup comment={commentId} openPopup={trigger2} closePopup={setTrigger2} commentOwner={userId} whichError={errorId}></CommentResultPopup>
+                <CommentResultPopup childComments={childComments} openPopup={trigger2} closePopup={setTrigger2} commentOwner={userId} whichError={errorId}></CommentResultPopup>
             </center>
         </div>
     );
-
 }
 
 export default DetailsPage;

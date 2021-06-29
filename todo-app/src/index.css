@@ -78,7 +78,7 @@ th {
   right: 16px;
 }
 
-.popup-inner2 {
+.popup-inner3 {
   position: relative;
   padding: 25px;
   width: 150%;
@@ -89,4 +89,13 @@ th {
 .columnWidth {
   width: 120px;
   padding: 20px 15px;
+}
+
+.popup-inner2 {
+  position: relative;
+  border-radius: 40px;
+  padding: 50px;
+  width: 150%;
+  background-color: #FFF;
+  max-width: 400px;
 }

@@ -65,6 +65,7 @@ app.post("/add", async (req, res) => {
 app.delete("/delete/:id", async (req, res) => {
     const {id} = req.params;
     const deleteError = await pool.query("UPDATE error SET \"isActive\" = $1 WHERE id = $2", [false, id]);
+    const deleteComment = await pool.query("UPDATE comments SET \"isActive\" = $1 WHERE \"errorId\" = $2", [false, id])
     res.json("deleted");
 })
 
@@ -77,13 +78,13 @@ app.put("/edit/:id", async (req, res) => {
 
 app.post("/comment", async (req, res) => {
     const {comment, date, errorId, userId} = req.body;
-    const saveComment = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\") VALUES($1, $2, $3, (SELECT name FROM register WHERE id = $4))", [comment, date, errorId, userId]);
+    const saveComment = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\", \"isActive\") VALUES($1, $2, $3, (SELECT name FROM register WHERE id = $4), $5)", [comment, date, errorId, userId, true]);
     res.json(saveComment.rows);
 })
 
 app.get("/allComments/:id", async (req, res) => {
     const {id} = req.params;
-    const comments = await pool.query("SELECT * FROM comments WHERE \"errorId\" = $1 AND \"parentCommentId\" IS NULL", [id]);
+    const comments = await pool.query("SELECT * FROM comments WHERE \"errorId\" = $1 AND \"parentCommentId\" IS NULL ORDER BY \"like\" ASC", [id]);
     res.json(comments.rows);
 })
 
@@ -99,10 +100,16 @@ app.get("/childComments/:commentId", async (req, res) => {
 })
 
 app.put("/rate/:id", async (req, res) => {
-    const {rate} = req.body;
     const {id} = req.params;
-    const setRate = await pool.query("UPDATE comments SET \"rate\" = $1 WHERE id = $2", [rate, id]);
+    const setRate = await pool.query("UPDATE comments SET \"like\" = (SELECT \"like\" FROM comments WHERE \"id\" = $1) + 1 WHERE id = $1", [id]);
     res.json(setRate.rows);
+    console.log(setRate.rows);
+})
+app.put("/rate2/:id", async (req, res) => {
+    const {id} = req.params;
+    const setRate = await pool.query("UPDATE comments SET \"dislike\" = (SELECT \"dislike\" FROM comments WHERE \"id\" = $1) + 1 WHERE id = $1", [id]);
+    res.json(setRate.rows);
+    console.log(setRate.rows);
 })
 
 app.listen(5000, () => {

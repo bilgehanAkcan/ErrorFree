@@ -19,7 +19,7 @@ function PopupDelete(props) {
                 <div className="popup-inner2">
                     <br></br>
                     <p>Are you sure you want to delete the error?</p>
-                    <button type="button" className="btn btn-success" onClick={deleteItem}>Delete</button>&nbsp;&nbsp;&nbsp;
+                    <button type="button" className="btn btn-success" onClick={() => {deleteItem(); props.setTrigger2(false)}}>Delete</button>&nbsp;&nbsp;&nbsp;
                     <button type="button" className="btn btn-danger" onClick={() => props.setTrigger2(false)}>Close</button>
                 </div>
             </div>

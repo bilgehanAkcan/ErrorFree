@@ -2,13 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {Link} from "react-router-dom";
 import { Cookies } from "react-cookie";
+import LogoutPopup from "./LogoutPopup";
 
 function NavBar() {
     const cookies = new Cookies();
     const userId = cookies.get("userId");
-
-    async function logout() {
-    }
+    const [trigger, setTrigger] = React.useState(false);
 
     return (
         <div>
@@ -27,12 +26,11 @@ function NavBar() {
                         </li>
                     </ul>
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <Link to="" onClick={logout} className="navbar-text-color">Log Out</Link>
-                        </li>
+                        <li className="navbar-text-color"><button type="button" onClick={() => setTrigger(true)}>Log Out</button></li>
                     </ul>
                 </div>
             </nav>
+            <LogoutPopup openPopup={trigger} closePopup={setTrigger}></LogoutPopup>
         </div>);
 }
 

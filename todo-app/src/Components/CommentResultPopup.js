@@ -2,36 +2,30 @@ import React, {useEffect} from "react";
 import { Cookies } from "react-cookie";
 
 function CommentResultPopup(props) {
-    const [childComments, setChildComments] = React.useState([]);
-
+    const childComments = props.childComments;
+    debugger;
     function printOneByOne(x) {
+        var commentDateTemp = new Date(x.commentDate);
+        var date = commentDateTemp.getDate() + "-" + (commentDateTemp.getMonth() + 1) + "-" + commentDateTemp.getFullYear();
         return (
             <tr>
                 <td><strong>{x.whoseComment}:</strong>&emsp;</td>
                 <td>{x.comment}&emsp;</td>
-                <td className="columnWidth">({x.commentDate})</td>
+                <td className="columnWidth">{date}</td>
             </tr>
         );
-    }
-
-    async function getAllComments() {
-        var commentId = props.comment;
-        const response = await fetch("http://localhost:5000/childComments/" + commentId);
-        const jsonData = await response.json();
-        setChildComments(jsonData);
     }
 
     function insidePopup() {
         return (
             <div className="popup">
-                <div className="popup-inner2">
-                    <br></br>
-                    {getAllComments() ? 
+                <div className="popup-inner3">
+                    <br></br> 
                     <div>
                         <table style={{maxWidth:"1200px"}}>
-                            {childComments.map(printOneByOne)}
+                            {childComments.length !== 0 ? childComments.map(printOneByOne) : <tr><strong><p>There is no subcomment for this comment.</p></strong></tr>}<br></br>
                         </table>
-                    </div> : null}
+                    </div>
                     <button type="button" onClick={() => props.closePopup(false)} className="btn btn-danger">Close</button>
                 </div>
             </div>
