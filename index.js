@@ -90,7 +90,7 @@ app.get("/allComments/:id", async (req, res) => {
 
 app.post("/extraComment", async (req, res) => {
     const {comment, date, errorId, userId, commentId} = req.body;
-    const childComments = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\", \"parentCommentId\") VALUES($1, $2, $3, (SELECT name FROM register WHERE id = $4), $5)", [comment, date, errorId, userId, commentId]);
+    const childComments = await pool.query("INSERT INTO comments(\"comment\", \"commentDate\", \"errorId\", \"whoseComment\", \"parentCommentId\", \"isActive\") VALUES($1, $2, $3, (SELECT name FROM register WHERE id = $4), $5, $6)", [comment, date, errorId, userId, commentId, true]);
 })
 
 app.get("/childComments/:commentId", async (req, res) => {
