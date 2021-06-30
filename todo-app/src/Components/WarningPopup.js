@@ -6,7 +6,7 @@ function WarningPopup(props) {
         return (
             <div className="popup">
                 <div className="popup-inner2">
-                    <strong><center><p>Please enter valid values for user name, email and password!</p></center></strong>
+                    <strong><center><p>{props.text}</p></center></strong>
                     <br></br>
                     <center><button type="button" className="btn btn-danger" onClick={() => props.closePopup(false)}>Close</button></center>
                 </div>

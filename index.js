@@ -112,6 +112,19 @@ app.put("/rate2/:id", async (req, res) => {
     console.log(setRate.rows);
 })
 
+app.get("/profile/:userId", async (req, res) => {
+    const {userId} = req.params;
+    const userName = await pool.query("SELECT name FROM register WHERE id = $1", [userId]);
+    res.json(userName.rows);
+})
+
+app.get("/profileErrors/:userId", async (req, res) => {
+    const {userId} = req.params;
+    const userErrors = await pool.query("SELECT * FROM error WHERE \"userId\" = $1 AND \"isActive\" = $2", [userId, true]);
+    res.json(userErrors.rows);
+    console.log(userErrors.rows);
+})
+
 app.listen(5000, () => {
     console.log("Server has started on port 5000.");
 });

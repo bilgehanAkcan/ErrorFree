@@ -1,15 +1,12 @@
-import React,{useEffect} from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import Navbar from "./NavBar";
 import {BiEdit} from "react-icons/bi";
 import {RiDeleteBin5Line} from "react-icons/ri";
 import Popup from "./Popup";
 import PopupDelete from "./PopupDelete";
-import {FcPlus} from "react-icons/fc";
 import { Cookies } from "react-cookie";
 import {AiOutlineInfoCircle} from "react-icons/ai";
 import {Link} from "react-router-dom"
-import DetailsPage from "./DetailsPage";
 import {useCookies} from "react-cookie";
 
 function HomePage() {

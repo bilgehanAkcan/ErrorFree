@@ -5,6 +5,7 @@ import SignInPage from "./Components/SignInPage";
 import HomePage from "./Components/HomePage";
 import EditPage from './Components/EditPage';
 import DetailsPage from './Components/DetailsPage';
+import ProfilePage from "./Components/ProfilePage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route exact path="/HomePage" component={HomePage} />
       <Route exact path="/EditPage" component={EditPage} />
       <Route exact path="/DetailsPage" component={DetailsPage} />
+      <Route exact path="/ProfilePage" component={ProfilePage} />
     </div>
   );
 }

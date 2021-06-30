@@ -24,9 +24,12 @@ function NavBar() {
                         <li className="nav-item ml-5">
                             <Link to="EditPage" className="navbar-text-color">Add</Link>
                         </li>
+                        <li className="nav-item ml-5">
+                            <Link to="ProfilePage" className="navbar-text-color">My Profile</Link>
+                        </li>
                     </ul>
                     <ul className="navbar-nav">
-                        <li className="navbar-text-color"><button type="button" onClick={() => setTrigger(true)}>Log Out</button></li>
+                        <li className="navbar-text-color"><button className="btn btn-light" type="button" onClick={() => setTrigger(true)}>Log Out</button></li>
                     </ul>
                 </div>
             </nav>

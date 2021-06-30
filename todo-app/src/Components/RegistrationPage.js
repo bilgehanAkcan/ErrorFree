@@ -12,6 +12,7 @@ function RegistrationPage() {
     const [password, setPassword] = React.useState("");
     const [passwordAgain, setPasswordAgain] = React.useState("");
     const [trigger, setTrigger] = React.useState(false);
+    const [text, setText] = React.useState("")
 
     async function register(e) {
         if ( name != "" && email != "" && password != "" ) {
@@ -24,11 +25,12 @@ function RegistrationPage() {
                 });
             }
             else {
-                alert("Not confirmed. Please try again.")
+                setText("Not confirmed. Passwords do not match. Please try again.");
+                setTrigger(true);
             }
         }
         else {
-            debugger;
+            setText("Please enter valid values for user name, email and password!");
             setTrigger(true);
         }
         
@@ -51,7 +53,7 @@ function RegistrationPage() {
                         <center><p style={{fontSize:"20px"}}><Link to="">Click</Link> to sign in</p></center>
                     </div>
                 </center>
-            <WarningPopup openPopup={trigger} closePopup={setTrigger}></WarningPopup>
+            <WarningPopup text={text} openPopup={trigger} closePopup={setTrigger}></WarningPopup>
         </div>
     );
 }

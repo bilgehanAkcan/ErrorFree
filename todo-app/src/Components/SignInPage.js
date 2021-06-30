@@ -26,6 +26,7 @@ function SignInPage() {
             temp = data.isValid;
             temp2 = data.userId;
             if (temp) {
+                const remember = localStorage.setItem("user", temp2)
             }
             else {
                 alert("Login Failed, Please Try Again");
@@ -49,7 +50,7 @@ function SignInPage() {
                         </table>
                         <br></br>
                         
-                        <button type="submit" onClick={checkLogin} className="btn btn-success"><Link to="HomePage">Log In</Link></button><br></br><br></br>
+                        <button type="button" onClick={checkLogin} className="btn btn-success"><Link to="HomePage">Log In</Link></button><br></br><br></br>
                         <p style={{color: "DarkGrey"}}>Not registered? <Link to="RegistrationPage">Create an account</Link></p>
                     </div>
                 </center>
