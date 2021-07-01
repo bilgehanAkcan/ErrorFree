@@ -84,7 +84,7 @@ app.post("/comment", async (req, res) => {
 
 app.get("/allComments/:id", async (req, res) => {
     const {id} = req.params;
-    const comments = await pool.query("SELECT * FROM comments WHERE \"errorId\" = $1 AND \"parentCommentId\" IS NULL ORDER BY \"like\" ASC", [id]);
+    const comments = await pool.query("SELECT * FROM comments WHERE \"errorId\" = $1 AND \"parentCommentId\" IS NULL ORDER BY \"like\" DESC", [id]);
     res.json(comments.rows);
 })
 
@@ -123,6 +123,12 @@ app.get("/profileErrors/:userId", async (req, res) => {
     const userErrors = await pool.query("SELECT * FROM error WHERE \"userId\" = $1 AND \"isActive\" = $2", [userId, true]);
     res.json(userErrors.rows);
     console.log(userErrors.rows);
+})
+
+app.get("/profileComment/:userId", async (req, res) => {
+    const {userId} = req.params;
+    const userComment = await pool.query("SELECT * FROM comments WHERE \"isActive\" = $1 AND \"parentCommentId\" IS NULL", [true]);
+    res.json(userComment.rows);
 })
 
 app.listen(5000, () => {
