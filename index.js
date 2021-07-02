@@ -99,17 +99,20 @@ app.get("/childComments/:commentId", async (req, res) => {
     res.json(specificChildComments.rows);
 })
 
-app.put("/rate/:id", async (req, res) => {
-    const {id} = req.params;
+app.put("/rate/:id/:userId", async (req, res) => {
+    const id = req.params.id;
+    const userId = req.params.userId;
     const setRate = await pool.query("UPDATE comments SET \"like\" = (SELECT \"like\" FROM comments WHERE \"id\" = $1) + 1 WHERE id = $1", [id]);
+    const saveLike = await pool.query("INSERT INTO \"commentUser\"(\"userId\", \"commentId\", \"isLiked\") VALUES($1, $2, $3)", [userId, id, true]);
     res.json(setRate.rows);
-    console.log(setRate.rows);
 })
-app.put("/rate2/:id", async (req, res) => {
-    const {id} = req.params;
+
+app.put("/rate2/:id/:userId", async (req, res) => {
+    const id = req.params.id;
+    const userId = req.params.userId;
     const setRate = await pool.query("UPDATE comments SET \"dislike\" = (SELECT \"dislike\" FROM comments WHERE \"id\" = $1) + 1 WHERE id = $1", [id]);
+    const saveLike = await pool.query("INSERT INTO \"commentUser\"(\"userId\", \"commentId\", \"isDisliked\") VALUES($1, $2, $3)", [userId, id, true]);
     res.json(setRate.rows);
-    console.log(setRate.rows);
 })
 
 app.get("/profile/:userId", async (req, res) => {

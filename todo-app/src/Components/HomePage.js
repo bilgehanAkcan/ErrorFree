@@ -67,8 +67,8 @@ function HomePage() {
                         <button type="button" onClick={() => {deleteId(x.id); setPopup2(true)}} className="btn btn-default btn-danger btn-sm">
                             <RiDeleteBin5Line></RiDeleteBin5Line>&nbsp;&nbsp;Delete
                         </button>&nbsp;
-                        <button type="button" onClick={() => {errorCookie(x)}} className="btn btn-default btn-info btn-sm">
-                            <AiOutlineInfoCircle></AiOutlineInfoCircle>&nbsp;&nbsp;<Link to="/DetailsPage">See Details</Link>
+                        <button type="button" style={{height:"32px"}} onClick={() => {errorCookie(x)}} className="btn btn-default btn-info btn-sm">
+                            <Link to="/DetailsPage"><p style={{color: "white"}}><AiOutlineInfoCircle></AiOutlineInfoCircle>&nbsp;&nbsp;See Details</p></Link>
                         </button>&nbsp;&nbsp;&nbsp;
                     </td>
             );

@@ -21,10 +21,18 @@ code {
   width: 150%;
 }
 
+.table-comment {
+  width:60%;
+  table-layout:fixed;
+  word-wrap:break-word;
+}
+  
+
 .table-td {
   width: 400px;
   background: white;
   text-align: center;
+  word-wrap:break-word;
 }
 
 .error-table {

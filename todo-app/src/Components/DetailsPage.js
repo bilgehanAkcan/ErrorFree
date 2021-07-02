@@ -55,7 +55,7 @@ function DetailsPage() {
     }
 
     async function updateRate(id) {
-        const response = await fetch("http://localhost:5000/rate/" + id, {
+        const response = await fetch("http://localhost:5000/rate/" + id + "/" + userId, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify()
@@ -64,7 +64,7 @@ function DetailsPage() {
     }
 
     async function updateRate2(id) {
-        const response = await fetch("http://localhost:5000/rate2/" + id, {
+        const response = await fetch("http://localhost:5000/rate2/" + id + "/" + userId, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify()
@@ -72,17 +72,16 @@ function DetailsPage() {
         const jsonData = await response.json();
     }
 
-
     function printOneByOne(x) {
         var currentDate = new Date(x.commentDate);
         date = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
         return (
             <tr>
-                <td><strong>{x.like}</strong></td>&nbsp;&nbsp;
-                <td><FiThumbsUp onClick={()=> {commentCookie(x); updateRate(x.id)}} size="1.5em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown onClick={()=> {commentCookie(x); updateRate2(x.id)}} size="1.5em"></FiThumbsDown></td>&nbsp;&nbsp;
-                <td><strong>{x.dislike}</strong></td>&emsp;&emsp;
-                <td><strong>{x.whoseComment}:</strong>&emsp;</td>
-                <td>{x.comment}&emsp;</td>
+                <td style={{width: "40px"}}><strong>{x.like}</strong></td>
+                <td style={{width: "90px"}}><FiThumbsUp onClick={()=> {commentCookie(x); updateRate(x.id)}} size="1.5em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown onClick={()=> {commentCookie(x); updateRate2(x.id)}} size="1.5em"></FiThumbsDown></td>
+                <td style={{width: "70px"}}><strong>{x.dislike}</strong></td>
+                <td style={{width:"100px"}}><strong>{x.whoseComment}:</strong></td>
+                <td className="table-td">{x.comment}</td>
                 <td className="columnWidth">{date}</td>
                 <td><button onClick={() => {setTrigger(true); commentCookie(x)}}>Add Comment</button></td>
                 <td><button onClick={() => {getChildComments(x.id); setTrigger2(true); commentCookie(x);}}>See Comments</button></td>
@@ -118,7 +117,7 @@ function DetailsPage() {
                 <h3>{errorDetails[0]?.errorContent}</h3>
                 <hr style={{width:"800px", borderWidth:"10px", border:"3px solid black"}}></hr>
                 <div>
-                    <table>
+                    <table className="table-comment">
                         {allComments.map(printOneByOne)}
                     </table>
                 </div> 
