@@ -111,5 +111,5 @@ th {
 }
 
 .click:active {
-  transform: scale(2);
+  transform: scale(0.5);
 }

@@ -20,7 +20,7 @@ function DetailsPage() {
     const [trigger2, setTrigger2] = React.useState(false);
     const [childComments, setChildComments] = React.useState([]);
     const commentId = cookies.get("commentId"); 
-
+    
     function commentCookie(x) {
         setCookie("commentId", x.id, {
             path: "/"
@@ -71,7 +71,6 @@ function DetailsPage() {
         });
         const jsonData = await response.json();
         window.location.reload();
-
     }
 
     function printOneByOne(x) {
@@ -80,8 +79,8 @@ function DetailsPage() {
         return (
             <tr>
                 <td style={{width: "40px"}}><strong>{x.like}</strong></td>
-                <td style={{width: "90px"}}><FiThumbsUp className="click" style={{color:"blue"}} onClick={()=> {commentCookie(x); updateRate(x.id)}} size="1.5em"></FiThumbsUp>&nbsp;&nbsp;&nbsp;<FiThumbsDown className="click" style={{color:"red"}} onClick={()=> {commentCookie(x); updateRate2(x.id)}} size="1.5em"></FiThumbsDown></td>
-                <td style={{width: "70px"}}><strong>{x.dislike}</strong></td>
+                <td style={{width: "90px"}}><FiThumbsUp className="click" style={{color:"blue"}} onClick={()=> {commentCookie(x); updateRate(x.id)}} size="2em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown className="click" style={{color:"red"}} onClick={()=> {commentCookie(x); updateRate2(x.id)}} size="2em"></FiThumbsDown></td>
+                <td style={{width: "70px"}}><strong>&nbsp;&nbsp;{x.dislike}</strong></td>
                 <td style={{width:"100px"}}><strong>{x.whoseComment}:</strong></td>
                 <td className="table-td">{x.comment}</td>
                 <td className="columnWidth">{date}</td>
@@ -107,6 +106,7 @@ function DetailsPage() {
             body: JSON.stringify(body)
         });
         getAllComments();
+        window.location.reload();
     }
 
     return (
