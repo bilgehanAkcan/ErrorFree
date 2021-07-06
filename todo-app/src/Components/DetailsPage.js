@@ -41,7 +41,6 @@ function DetailsPage() {
             }
         });
     }
-    
 
     function getDate(){
         var errorDate = new Date(errorDetails[0]?.errorDate);
@@ -61,6 +60,7 @@ function DetailsPage() {
             body: JSON.stringify()
         });
         const jsonData = await response.json();
+        window.location.reload();
     }
 
     async function updateRate2(id) {
@@ -70,6 +70,8 @@ function DetailsPage() {
             body: JSON.stringify()
         });
         const jsonData = await response.json();
+        window.location.reload();
+
     }
 
     function printOneByOne(x) {
@@ -78,13 +80,13 @@ function DetailsPage() {
         return (
             <tr>
                 <td style={{width: "40px"}}><strong>{x.like}</strong></td>
-                <td style={{width: "90px"}}><FiThumbsUp onClick={()=> {commentCookie(x); updateRate(x.id)}} size="1.5em"></FiThumbsUp>&nbsp;&nbsp;<FiThumbsDown onClick={()=> {commentCookie(x); updateRate2(x.id)}} size="1.5em"></FiThumbsDown></td>
+                <td style={{width: "90px"}}><FiThumbsUp className="click" style={{color:"blue"}} onClick={()=> {commentCookie(x); updateRate(x.id)}} size="1.5em"></FiThumbsUp>&nbsp;&nbsp;&nbsp;<FiThumbsDown className="click" style={{color:"red"}} onClick={()=> {commentCookie(x); updateRate2(x.id)}} size="1.5em"></FiThumbsDown></td>
                 <td style={{width: "70px"}}><strong>{x.dislike}</strong></td>
                 <td style={{width:"100px"}}><strong>{x.whoseComment}:</strong></td>
                 <td className="table-td">{x.comment}</td>
                 <td className="columnWidth">{date}</td>
-                <td><button onClick={() => {setTrigger(true); commentCookie(x)}}>Add Comment</button></td>
-                <td><button onClick={() => {getChildComments(x.id); setTrigger2(true); commentCookie(x);}}>See Comments</button></td>
+                <td><button className="btn btn-outline-success" onClick={() => {setTrigger(true); commentCookie(x)}}>Add Comment</button></td>&emsp;
+                <td><button className="btn btn-outline-primary" onClick={() => {getChildComments(x.id); setTrigger2(true); commentCookie(x);}}>See Comments</button></td>
             </tr>
         );
     }
