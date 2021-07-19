@@ -7,6 +7,7 @@ import CommentPopup from "./CommentPopup";
 import {useCookies} from "react-cookie";
 import CommentResultPopup from "./CommentResultPopup";
 
+//the page you face when you press on "See Details" button on Home Page.
 function DetailsPage() {
     const cookies = new Cookies();
     const [cookies3, setCookie] = useCookies(["commentId"]);

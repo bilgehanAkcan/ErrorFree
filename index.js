@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const pool = require("./db");
-
+//using express framework
 app.use(cors());
 app.use(express.json());
 
