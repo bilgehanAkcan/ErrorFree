@@ -9,6 +9,8 @@ import {AiOutlineInfoCircle} from "react-icons/ai";
 import {Link} from "react-router-dom"
 import {useCookies} from "react-cookie";
 
+//Home Page is the page where you can see all errors and search for specific error.
+
 function HomePage() {
     const cookies = new Cookies();
     const [cookies2, setCookie] = useCookies(["errorId"]);
