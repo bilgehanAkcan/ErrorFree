@@ -2,6 +2,8 @@ import React from "react";
 import {Link} from "react-router-dom"
 import {Cookies} from "react-cookie";
 
+//Popup that asks whether you are sure to log out
+
 function LogoutPopup(props) {
     const cookies = new Cookies();
     function insidePopup() {
