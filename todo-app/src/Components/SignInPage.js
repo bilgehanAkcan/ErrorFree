@@ -7,6 +7,8 @@ import {Link} from "react-router-dom";
 import RegistrationPage from "./RegistrationPage";
 import {useCookies} from "react-cookie";
 
+//The page where users can sign in, password check is done.
+
 function SignInPage() {
     const [cookies, setCookie] = useCookies(["userId"])
     const [email, setEmail] = React.useState("");

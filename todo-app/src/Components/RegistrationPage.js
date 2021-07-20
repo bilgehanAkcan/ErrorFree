@@ -6,6 +6,9 @@ import {RiLockPasswordFill} from "react-icons/ri";
 import WarningPopup from "./WarningPopup";
 import {Link} from "react-router-dom";
 
+//The page where people can register with name, email and password.
+
+
 function RegistrationPage() {
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
