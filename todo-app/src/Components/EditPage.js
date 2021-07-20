@@ -4,6 +4,8 @@ import Navbar from "./NavBar";
 import HomePage from "./HomePage";
 import { Cookies } from "react-cookie";
 
+//Error content can be edited.
+
 function EditPage() {
     const cookies = new Cookies();
     const [header, setHeader] = React.useState("");

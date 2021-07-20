@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import NavBar from "./NavBar";
 import {Cookies} from "react-cookie"
 
+//Profile page where users can see their own errors and most liked comments.
+
 function ProfilePage() {
     const cookies = new Cookies();
     const userId = cookies.get("userId");
